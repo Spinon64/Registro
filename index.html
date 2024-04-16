@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrador de Asistencia</title>
+    <style>
+      /* Estilos CSS */
+    </style>
+  </head>
+  <body>
+    <h1>Registrador de Asistencia</h1>
+    <form id="attendanceForm">
+      <label for="fullName">Nombre Completo:</label><br />
+      <input type="text" id="fullName" name="fullName" required /><br />
+      <label for="studentID">Número de Cuenta (8 dígitos):</label><br />
+      <input
+        type="text"
+        id="studentID"
+        name="studentID"
+        pattern="[0-9]{8}"
+        required
+      /><br />
+      <label for="gradeGroup">Grado y Grupo (ej: 5A):</label><br />
+      <input
+        type="text"
+        id="gradeGroup"
+        name="gradeGroup"
+        pattern="[1-8][A-K]"
+        required
+      /><br />
+      <button type="submit">Registrar Asistencia</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("attendanceForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const fullName = document.getElementById("fullName").value.trim();
+          const studentID = document.getElementById("studentID").value.trim();
+          const gradeGroup = document.getElementById("gradeGroup").value.trim();
+
+          // Verificar si el grupo es 7G, si es así, no contar la asistencia
+          if (gradeGroup === "7G") {
+            alert("No se contará la asistencia para este estudiante.");
+            return;
+          }
+
+          // Verificar si el estudiante pertenece a los grupos A, B o C
+          let attendanceMultiplier = 1;
+          if (["A", "B", "C"].includes(gradeGroup.charAt(1))) {
+            attendanceMultiplier = 2;
+          }
+
+          // Verificar si el estudiante pertenece a grados 4 o mayores
+          if (parseInt(gradeGroup.charAt(0)) >= 4) {
+            attendanceMultiplier *= 3;
+          }
+
+          alert(
+            `Asistencia registrada para ${fullName}. Asistencia contada: ${attendanceMultiplier}x`
+          );
+        });
+    </script>
+  </body>
+</html>
